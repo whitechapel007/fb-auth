@@ -19,7 +19,7 @@ const App = () => {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/fb-auth" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
