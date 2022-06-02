@@ -9,10 +9,10 @@ const Header = () => {
     <>
       <nav className="px-5 bg-[#16003B] scroll-smooth">
         <div className="flex items-center ">
-          <Link to="/" className="flex-1">
+          <Link to="/fb-auth/" className="flex-1">
             <img src={logo} alt="" className="" />
           </Link>
-          {location.pathname === "/fb-auth" ? (
+          {location.pathname === "/fb-auth/" ? (
             <Link
               to="/signup"
               className=" border rounded-md bg-white text-[#290464] py-2 px-5 font-bold capitalize"
