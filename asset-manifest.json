@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/fb-auth/static/css/main.4576b8c0.css",
-    "main.js": "/fb-auth/static/js/main.c384fc0d.js",
+    "main.js": "/fb-auth/static/js/main.033916e8.js",
     "static/media/main.svg": "/fb-auth/static/media/main.bf79828f6e12c5a8f896783e5e6b9396.svg",
     "static/media/undraw_education_f8ru.svg": "/fb-auth/static/media/undraw_education_f8ru.3f566d8048be8948c0fd21da2fbbeb7a.svg",
     "index.html": "/fb-auth/index.html",
     "main.4576b8c0.css.map": "/fb-auth/static/css/main.4576b8c0.css.map",
-    "main.c384fc0d.js.map": "/fb-auth/static/js/main.c384fc0d.js.map"
+    "main.033916e8.js.map": "/fb-auth/static/js/main.033916e8.js.map"
   },
   "entrypoints": [
     "static/css/main.4576b8c0.css",
-    "static/js/main.c384fc0d.js"
+    "static/js/main.033916e8.js"
   ]
 }
