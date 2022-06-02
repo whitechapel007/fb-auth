@@ -6,16 +6,19 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signin, alert, setAltert } = useAuth();
+  const { signin, alert, setAltert,setLoading } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     try {
       if (email == "" || password == "") {
         setAltert("empty username and password ");
       }
+      setLoading(true)
       await signin(email, password);
       navigate("/dashboard");
+      setLoading(false)
     } catch (error) {
       console.log(error.message);
       setAltert(error.message);

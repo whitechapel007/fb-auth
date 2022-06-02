@@ -15,27 +15,56 @@ const UserContext = React.createContext();
 const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState("");
+  const [data, setData] = useState("");
+
   const [alert, setAltert] = useState("");
-  const createUser = async (email, password) => {
-    try {
-      const createUser = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      const now = new Date();
-      const item = {
-        value: createUser,
-        expiry: now.getTime() + 360,
-      };
-      localStorage.setItem("user", JSON.stringify(item));
+  useEffect(() => {
+    const getLocalStorage = () => {
+      let fetchData = localStorage.getItem("user");
+      if (fetchData) {
+        fetchData = JSON.parse(localStorage.getItem("user"));
+        setData(fetchData);
+      } else {
+        return {};
+      }
+      // console.log(users?.value.email);
+      //  setData(users?.value.email);
+      // const { displayName, email, phoneNumber, photoURL } =
+      //   users.value.providerData[0];
 
-      navigate("/dashboard");
-    } catch (error) {
-      console.log(error.message);
-      setAltert(error.message);
-    }
+      // let name = email.split("@")[0];
+      // let name = users.value.email.split("@")[0];
+    };
+
+    getLocalStorage();
+  }, []);
+  const createUser = (email, password) => {
+    setLoading(true);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        const {
+          displayName: name,
+          email,
+          photoURL: src,
+          accessToken: token,
+        } = res.user;
+        const user = { name, email, src, token };
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // const now = new Date();
+        // const item = {
+        //   value: createUser,
+        //   expiry: now.getTime() + 360,
+        // };
+
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        setAltert(error.message);
+      });
   };
 
   useEffect(() => {
@@ -52,40 +81,48 @@ const AuthContextProvider = ({ children }) => {
   const logout = () => {
     return signOut(auth);
   };
-  const signin = async (email, password) => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      const now = new Date();
-      const item = {
-        value: result,
-        expiry: now.getTime() + 360,
-      };
-      localStorage.setItem("user", JSON.stringify(item));
+  const signin = (email, password) => {
+    setLoading(true);
 
-      navigate("/dashboard");
-    } catch (error) {
-      console.log(error.message);
+    const result = signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        const {
+          displayName: name,
+          email,
+          photoURL: src,
+          accessToken: token,
+        } = res.user;
+        const user = { name, email, src, token };
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/dashboard");
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.message);
 
-      setAltert(error.message);
-    }
+        setAltert(error.message);
+      });
   };
-  const signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      let result = await signInWithPopup(auth, provider);
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((res) => {
+        const {
+          displayName: name,
+          email,
+          photoURL: src,
+          accessToken: token,
+        } = res.user;
+        const user = { name, email, src, token };
+        localStorage.setItem("user", JSON.stringify(user));
 
-      const now = new Date();
-      const item = {
-        value: result,
-        expiry: now.getTime() + 360,
-      };
-      localStorage.setItem("user", JSON.stringify(item));
-
-      navigate("/dashboard");
-    } catch (error) {
-      console.log(error.message);
-      setAltert(error.message);
-    }
+        navigate("/dashboard");
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setAltert(error.message);
+      });
   };
   return (
     <UserContext.Provider
@@ -98,6 +135,9 @@ const AuthContextProvider = ({ children }) => {
         db,
         alert,
         setAltert,
+        loading,
+        setLoading,
+        data,
       }}
     >
       {children}

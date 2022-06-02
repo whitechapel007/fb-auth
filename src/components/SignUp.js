@@ -7,17 +7,20 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
 
-  const { createUser, signInWithGoogle, alert, setAltert } = useAuth();
+  const { createUser, signInWithGoogle, alert, setAltert, setLoading } =
+    useAuth();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (password === confirmpassword) {
+        setLoading(true);
         await createUser(email, password);
         navigate("/dashboard");
         setPassword("");
         setEmail("");
+        setLoading(false);
       } else {
         setAltert("passwords Dont match");
       }
